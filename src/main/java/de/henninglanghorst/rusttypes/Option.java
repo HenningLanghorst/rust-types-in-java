@@ -26,7 +26,17 @@ public sealed interface Option<T> {
     record None<N>() implements Option<N> {
     }
 
+
+    /**
+     * Returns the value of the option. If the option is empty, a {@link NoSuchElementException} is thrown.
+     *
+     * @return the value of the option
+     * @throws NoSuchElementException if the option is empty
+     */
     default T value() {
-        throw new NoSuchElementException("No value");
+        return switch (this) {
+            case Some<T>(T value) -> value;
+            case None<T> ignored -> throw new NoSuchElementException("No value present");
+        };
     }
 }
